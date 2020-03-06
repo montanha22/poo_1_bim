@@ -2,7 +2,7 @@
 
 ## Projeto de CES-22 - 1º bimestre
 
-## Equipe A-Team
+## Equipe Boss Slayer
 
 * ### Due Jie Wan
 
