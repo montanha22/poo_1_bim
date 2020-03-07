@@ -42,10 +42,21 @@ class GameManager():
             self.toggleFullscreen()
         
         #In game events
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
-            self.hero.moveUp()
-            self.screen.blit(self.hero.sprite,(self.hero.object.x,self.hero.object.y))
+        if event.type == pygame.KEYDOWN and event.key   == pygame.K_w:
+             self.hero.moveUp()
         
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
+            self.hero.moveDown()
+
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
+            self.hero.moveLeft()
+        
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
+            self.hero.moveRight()
+
+
+        pygame.display.flip()
+
     def onLoop(self):
         pass
 
@@ -61,7 +72,7 @@ class GameManager():
         self.screen.blit(self.current_background, (0,0))
 
         #Render Hero
-        self.screen.blit(self.hero.sprite,(0,0))
+        self.screen.blit(self.hero.sprite,(self.hero.object.x,self.hero.object.y))
 
 
 
@@ -78,6 +89,7 @@ class GameManager():
         while(self._running):
             self.clock.tick(60)
             self.count = (self.count + 1) % 30
+
             # get events
             for event in pygame.event.get():
                 self.onEvent(event)

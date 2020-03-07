@@ -19,10 +19,25 @@ class Hero():
         self.sprite = self.spriteIdle_list[0]
 
         #Hero object
-        self.object = GameObject(2,(0,0))
+        self.object = GameObject(0,0,2)
 
 
     def moveUp(self):
 
         self.sprite = self.spriteUp_list[0]
+        self.object.y-=self.object.speed
+
+    def moveDown(self):
+
+        self.sprite = self.spriteUp_list[0]
         self.object.y+=self.object.speed
+
+    def moveLeft(self):
+
+        self.sprite = self.spriteUp_list[0]
+        self.object.x-=self.object.speed
+
+    def moveRight(self):
+
+        self.sprite = self.spriteUp_list[0]
+        self.object.x+=self.object.speed
