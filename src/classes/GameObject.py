@@ -1,4 +1,9 @@
+import pygame
+
 class GameObject:
-    def __init__ (self, pos = (0, 0), speed = 0):
+    def __init__ (self, x=0,y=0, speed = 0):
         self.speed = speed
-        self.pos = pos
+        self.x = x
+        self.y = y
+        #Create object rectangle
+        self.rect = pygame.Rect(10,10,10,10)

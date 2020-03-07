@@ -3,11 +3,12 @@ import sys
 from random import sample
 import glob
 from classes.EventManager import EventManager
+from classes.Hero import Hero
 
 class GameManager():
     def __init__(self):
         self._running = True
-        self._display_surf = None
+        self.screen = None
         self.size = self.width, self.height = 1080, 720
         self.background_list = []
         self.stage = 1
@@ -16,18 +17,19 @@ class GameManager():
         self.clock = pygame.time.Clock()
         self.fullscreen = True
         self.eventmanager = EventManager()
+        self.hero = Hero()
 
     def onInit(self):
         pygame.init()
         screen_info = pygame.display.Info()
         #print(screen_info.current_w, screen_info.current_h)
         #Resizable resizes the display but game doesnt scale up nor down
-        self._display_surf = pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+        self.screen = pygame.display.set_mode((0, 0), pygame.RESIZABLE)
         self.fullscreen = True
         self._running = True
         self.background_list = [pygame.image.load(i) for i in glob.glob("./sprites/stages/" + str(self.stage) + "/background/*.png")]
-        print(len(self.background_list))
-        print(glob.glob("./sprites/stages/" + str(self.stage) + "/background/*.png"))
+      #  print(len(self.background_list))
+      #  print(glob.glob("./sprites/stages/" + str(self.stage) + "/background/*.png"))
 
 
     def onEvent(self, event):
@@ -40,8 +42,9 @@ class GameManager():
             self.toggleFullscreen()
         
         #In game events
-        else:
-            self.eventmanager.getEvent(event)
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
+            self.hero.moveUp()
+            self.screen.blit(self.hero.sprite,(self.hero.object.x,self.hero.object.y))
         
     def onLoop(self):
         pass
@@ -52,9 +55,16 @@ class GameManager():
 
 
     def onRender(self):
+        #Render Background
         if self.count == 0 or self.current_background == None:
             self.current_background = sample(self.background_list, 1)[0]
-        self._display_surf.blit(self.current_background, (0,0))
+        self.screen.blit(self.current_background, (0,0))
+
+        #Render Hero
+        self.screen.blit(self.hero.sprite,(0,0))
+
+
+
         pygame.display.flip()
 
     def onCleanup(self):
@@ -73,7 +83,7 @@ class GameManager():
                 self.onEvent(event)
             # act
             self.onLoop()
-            # atualization and render
+            # update and render
             self.onRender()
         
         self.onCleanup()
