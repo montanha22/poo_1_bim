@@ -1,4 +1,5 @@
 import pygame
+from pygame.locals import *
 import sys
 from random import sample
 import glob
@@ -32,33 +33,46 @@ class GameManager():
       #  print(glob.glob("./sprites/stages/" + str(self.stage) + "/background/*.png"))
 
 
-    def onEvent(self, event):
+    def onEvent(self):
         #Main system events
-        if event.type == pygame.QUIT:
-            self._running = False
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            self._running = False
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_F10:
-            self.toggleFullscreen()
-        
-        #In game events
-        if event.type == pygame.KEYDOWN and event.key   == pygame.K_w:
-             self.hero.moveUp()
-        
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
-            self.hero.moveDown()
+        pressed = pygame.key.get_pressed()
 
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_a:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self._running = False
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                self._running = False
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_F10:
+                self.toggleFullscreen()
+            
+        #In game events
+        up = (pressed[pygame.K_w] or pressed[pygame.K_UP])
+        down = (pressed[pygame.K_s] or pressed[pygame.K_DOWN])
+        left = (pressed[pygame.K_a] or pressed[pygame.K_LEFT])
+        right = (pressed[pygame.K_d] or pressed[pygame.K_RIGHT])
+        #print(up, down, left, right)
+        self.hero.stop()
+        if up:
+            self.hero.moveUp()
+        if down:
+            self.hero.moveDown()
+        
+        if up and down:
+            self.hero.stopUpDown()
+
+        if left:
             self.hero.moveLeft()
         
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
+        if right:
             self.hero.moveRight()
 
-
-        pygame.display.flip()
+        if left and right:
+            self.hero.stopLeftRigth()
 
     def onLoop(self):
-        pass
+        self.hero.updatePosition()
 
     def toggleFullscreen(self):
             pygame.display.toggle_fullscreen()
@@ -72,7 +86,9 @@ class GameManager():
         self.screen.blit(self.current_background, (0,0))
 
         #Render Hero
-        self.screen.blit(self.hero.sprite, self.hero.rect)
+        #print(self.hero.x, self.hero.y)
+        print(self.hero.getRect())
+        self.screen.blit(self.hero.sprite, (self.hero.x, self.hero.y))
 
 
 
@@ -90,15 +106,14 @@ class GameManager():
             self.clock.tick(60)
             self.count = (self.count + 1) % 30
 
-            # get events
-            for event in pygame.event.get():
-                self.onEvent(event)
+            # get keys presseds and mouse infos
+            self.onEvent()
 
 
-            # act
+            # act and update 
             self.onLoop()
             
-            # update and render
+            # render
             self.onRender()
         
         self.onCleanup()
