@@ -72,7 +72,7 @@ class GameManager():
         self.screen.blit(self.current_background, (0,0))
 
         #Render Hero
-        self.screen.blit(self.hero.sprite,(self.hero.object.x,self.hero.object.y))
+        self.screen.blit(self.hero.sprite, self.hero.rect)
 
 
 
