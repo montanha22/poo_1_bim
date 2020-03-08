@@ -34,7 +34,6 @@ class GameManager():
 
 
     def onEvent(self):
-        #Main system events
         pressed = pygame.key.get_pressed()
 
         for event in pygame.event.get():
@@ -47,12 +46,11 @@ class GameManager():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F10:
                 self.toggleFullscreen()
             
-        #In game events
         up = (pressed[pygame.K_w] or pressed[pygame.K_UP])
         down = (pressed[pygame.K_s] or pressed[pygame.K_DOWN])
         left = (pressed[pygame.K_a] or pressed[pygame.K_LEFT])
         right = (pressed[pygame.K_d] or pressed[pygame.K_RIGHT])
-        #print(up, down, left, right)
+
         self.hero.stop()
         if up:
             self.hero.moveUp()
@@ -81,13 +79,12 @@ class GameManager():
 
     def onRender(self):
         #Render Background
+        self.screen.fill((255,255,255))
         if self.count == 0 or self.current_background == None:
             self.current_background = sample(self.background_list, 1)[0]
         self.screen.blit(self.current_background, (0,0))
 
         #Render Hero
-        #print(self.hero.x, self.hero.y)
-        print(self.hero.getRect())
         self.screen.blit(self.hero.sprite, (self.hero.x, self.hero.y))
 
 

@@ -47,7 +47,12 @@ class Hero(GameObject):
 
     def updatePosition(self):
         #print(self.velocity)
-        self.move_ip(10*self.velocity[0], 10*self.velocity[1])
+        if self.velocity[0] == 0 or self.velocity[1] == 0:
+            scale_factor = 10
+        else:
+            scale_factor = 10 / np.sqrt(2)
+        self.velocity = [i * scale_factor for i in self.velocity]
+        self.move_ip(self.velocity[0], self.velocity[1])
     
     def stop(self):
         self.stopLeftRigth()
