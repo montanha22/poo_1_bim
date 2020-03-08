@@ -4,7 +4,7 @@ import glob
 from classes.GameObject import GameObject
 
 
-class Hero():
+class Hero(GameObject):
 
     def __init__(self):
 
@@ -18,8 +18,19 @@ class Hero():
         #Hero actual sprite
         self.sprite = self.spriteIdle_list[0]
 
+
+
+
         #Hero object
-        self.object = GameObject(0,0,2)
+        # self.object = GameObject( (0,0) , self.width, self.height, self.vel)
+
+    def draw(self, screen):
+        if self.moveCount + 1 >= 24
+
+        if(self.moving){
+
+
+        }
 
 
     def moveUp(self):

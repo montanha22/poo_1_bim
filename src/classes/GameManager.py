@@ -93,8 +93,11 @@ class GameManager():
             # get events
             for event in pygame.event.get():
                 self.onEvent(event)
+
+
             # act
             self.onLoop()
+            
             # update and render
             self.onRender()
         
