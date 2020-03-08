@@ -1,15 +1,18 @@
 import pygame
 
 class GameObject:
-    def __init__ (self, position, width, height, speed = 0):
-        self.width = 15
-        self.height = 21
-        self.velocity = None
+    def __init__ (self, position=(720, 480), width=0, height=0, velocity=0):
+        self.velocity = velocity
+
         self.moving = False
         self.moveCount = 0
         self.attacking = False
         self.attackCount = 0
-        self.hitbox = (self.x + 6, self.y + 3, width, height)
+
+
+        self.rect = pygame.Rect(position[0], position[1], width, height)
+
+
 
 
 
