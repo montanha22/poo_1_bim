@@ -54,7 +54,7 @@ class Hero(GameObject):
     def stopUpDown(self):
         self.velocity[1] = 0
 
-    def updateSprite():
+    def updateSprite(self):
 
         if self.velocity[0] == 1:
             if self.velocity[1] == 1:
@@ -67,22 +67,25 @@ class Hero(GameObject):
         elif self.velocity[0] == -1:
 
             if self.velocity[1] == 1:
-                pass
+                self.sprite = self.spritesheetDownLeft
             elif self.velocity[1] == -1:
-                pass
+                self.sprite = self.spritesheetUpLeft
             else:
                 self.sprite = self.spritesheetLeft
         else:
             if self.velocity[1] == 1:
-                pass
+                self.sprite = self.spritesheetDown
             elif self.velocity[1] == -1:
-                pass
+                self.sprite = self.spritesheetUp
             else:
-                pass
+                self.sprite = pygame.transform.scale(self.spritesheetDown.subsurface(pygame.Rect(0,0,32,32)), (100, 100))
+                return None
+        self.current_sprite_number = (self.current_sprite_number + 1) % 4
+        self.sprite = pygame.transform.scale(self.sprite.subsurface(pygame.Rect(32*self.current_sprite_number, 0, 32, 32)), (100,100))
 
 
     def updatePosition(self):
-        #self.updateSprite()
+        self.updateSprite()
         #print(self.velocity)
         if self.velocity[0] == 0 or self.velocity[1] == 0:
             scale_factor = 10
