@@ -5,11 +5,14 @@ from random import sample
 import glob
 from classes.EventManager import EventManager
 from classes.Hero import Hero
+from classes.Aim import Aim
 
 class GameManager():
     def __init__(self):
+        pygame.init()
+        pygame.mouse.set_cursor((8,8),(0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0))
         self._running = True
-        self.screen = None
+        self.screen = pygame.display.set_mode((0, 0), pygame.RESIZABLE)
         self.size = self.width, self.height = 1080, 720
         self.background_list = []
         self.stage = 1
@@ -19,13 +22,12 @@ class GameManager():
         self.fullscreen = True
         self.eventmanager = EventManager()
         self.hero = Hero()
+        self.aim = Aim(pygame.mouse.get_pos())
 
     def onInit(self):
-        pygame.init()
         screen_info = pygame.display.Info()
         #print(screen_info.current_w, screen_info.current_h)
         #Resizable resizes the display but game doesnt scale up nor down
-        self.screen = pygame.display.set_mode((0, 0), pygame.RESIZABLE)
         self.fullscreen = True
         self._running = True
         self.background_list = [pygame.image.load(i) for i in glob.glob("./sprites/stages/" + str(self.stage) + "/background/*.png")]
@@ -83,7 +85,8 @@ class GameManager():
         if self.count == 0 or self.current_background == None:
             self.current_background = sample(self.background_list, 1)[0]
         self.screen.blit(self.current_background, (0,0))
-
+        self.aim.updateToPosition(pygame.mouse.get_pos())
+        pygame.draw.circle(self.screen, self.aim.color, self.aim.position, self.aim.radius )
         #Render Hero
         self.screen.blit(self.hero.sprite, (self.hero.x, self.hero.y))
 

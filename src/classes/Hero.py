@@ -3,22 +3,31 @@ import glob
 #import definitions
 from .GameObject import GameObject
 import numpy as np
-
+import cv2
+from .Spritesheet import SpriteSheet
 class Hero(GameObject):
 
     def __init__(self):
         GameObject.__init__(self)
         #Load all Hero sprites
-        self.spriteUp_list = [pygame.image.load(i) for i in glob.glob("./sprites/hero/Up/*.png")]
-        self.spriteDown_list = [pygame.image.load(i) for i in glob.glob("./sprites/hero/Down/*.png")]
-        self.spriteLeft_list = [pygame.image.load(i) for i in glob.glob("./sprites/hero/Left/*.png")]
-        self.spriteRight_list = [pygame.image.load(i) for i in glob.glob("./sprites/hero/Right/*.png")]
-        self.spriteIdle_list = [pygame.image.load(i) for i in glob.glob("./sprites/hero/Idle/*.png")]
+        self.spritesheetUp = pygame.image.load('sprites/TopDownCharacter/Character/Character_Up.png')
+        self.spritesheetDown = pygame.image.load('sprites/TopDownCharacter/Character/Character_Down.png')
+        self.spritesheetLeft = pygame.image.load('sprites/TopDownCharacter/Character/Character_Left.png')
+        self.spritesheetRight = pygame.image.load('sprites/TopDownCharacter/Character/Character_Right.png')
+
+        self.spritesheetDownLeft = pygame.image.load('sprites/TopDownCharacter/Character/Character_DownLeft.png')
+        self.spritesheetDownRight = pygame.image.load('sprites/TopDownCharacter/Character/Character_DownRight.png')
+        self.spritesheetUpLeft = pygame.image.load('sprites/TopDownCharacter/Character/Character_UpLeft.png')
+        self.spritesheetUpRight = pygame.image.load('sprites/TopDownCharacter/Character/Character_UpRight.png')
         
+        #self.ss = SpriteSheet('sprites/TopDownCharacter/Character/Character_Down.png')
+        self.ss = self.spritesheetDown
+        #self.spriteIdle = self.spriteDown
+        #print(self.spriteDown_list)
         #Hero actual sprite
-        self.sprite = self.spriteIdle_list[0]
+        self.sprite = pygame.transform.scale(self.ss.subsurface(pygame.Rect(0,0,32,32)), (100,100))
 
-
+        self.current_sprite_number = 0
     
 
     def draw(self, screen):
@@ -45,7 +54,35 @@ class Hero(GameObject):
     def stopUpDown(self):
         self.velocity[1] = 0
 
+    def updateSprite():
+
+        if self.velocity[0] == 1:
+            if self.velocity[1] == 1:
+                self.sprite = self.spritesheetDownRight
+            elif self.velocity[1] == -1:
+                self.sprite = self.spritesheetUpRight
+            else:
+                self.sprite = self.spritesheetRight
+
+        elif self.velocity[0] == -1:
+
+            if self.velocity[1] == 1:
+                pass
+            elif self.velocity[1] == -1:
+                pass
+            else:
+                self.sprite = self.spritesheetLeft
+        else:
+            if self.velocity[1] == 1:
+                pass
+            elif self.velocity[1] == -1:
+                pass
+            else:
+                pass
+
+
     def updatePosition(self):
+        #self.updateSprite()
         #print(self.velocity)
         if self.velocity[0] == 0 or self.velocity[1] == 0:
             scale_factor = 10
@@ -57,3 +94,5 @@ class Hero(GameObject):
     def stop(self):
         self.stopLeftRigth()
         self.stopUpDown()
+
+
