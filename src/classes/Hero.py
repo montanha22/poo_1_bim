@@ -8,7 +8,7 @@ from .Spritesheet import SpriteSheet
 class Hero(GameObject):
 
     def __init__(self):
-        GameObject.__init__(self)
+        GameObject.__init__(self, width=32, height=32)
         #Load all Hero sprites
         self.spritesheetUp = pygame.image.load('sprites/TopDownCharacter/Character/Character_Up.png')
         self.spritesheetDown = pygame.image.load('sprites/TopDownCharacter/Character/Character_Down.png')
@@ -26,8 +26,10 @@ class Hero(GameObject):
         #print(self.spriteDown_list)
         #Hero actual sprite
         self.sprite = pygame.transform.scale(self.ss.subsurface(pygame.Rect(0,0,32,32)), (100,100))
-
+        self.is_rewinding = False
         self.current_sprite_number = 0
+
+        self.can_rewind = False
     
 
     def draw(self, screen):
@@ -92,10 +94,26 @@ class Hero(GameObject):
         else:
             scale_factor = 10 / np.sqrt(2)
         self.velocity = [i * scale_factor for i in self.velocity]
+        #print(self.velocity)
         self.move_ip(self.velocity[0], self.velocity[1])
     
+    def get_correct_position_to_blit(self):
+        return (self.getRect()[0] - self.w -2, self.getRect()[1] - self.h)
+
     def stop(self):
         self.stopLeftRigth()
         self.stopUpDown()
+
+    def rewind(self, chronosinfo):
+        if chronosinfo == None:
+            self.is_rewinding == False
+            self.clamp_ip(self.getRect())
+        else:
+            self.sprite = chronosinfo[0]
+            self.clamp_ip(chronosinfo[2])
+
+
+
+
 
 

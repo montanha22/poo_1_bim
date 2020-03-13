@@ -9,6 +9,7 @@ class Aim(GameObject):
         self.position = pos
         self.color = (255, 255, 0)
         self.radius = 20
+        self.thick = 1
 
     def updateToPosition(self, pos):
         self.position = pos
