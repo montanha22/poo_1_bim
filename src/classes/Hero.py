@@ -8,7 +8,8 @@ from .Spritesheet import SpriteSheet
 class Hero(GameObject):
 
     def __init__(self):
-        GameObject.__init__(self, width=32, height=32)
+        GameObject.__init__(self, width=48, height=48, position = [pygame.display.Info().current_w/2, pygame.display.Info().current_h/2])
+        self.scalar_velocity = 5
         #Load all Hero sprites
         self.spritesheetUp = pygame.image.load('sprites/TopDownCharacter/Character/Character_Up.png')
         self.spritesheetDown = pygame.image.load('sprites/TopDownCharacter/Character/Character_Down.png')
@@ -20,6 +21,11 @@ class Hero(GameObject):
         self.spritesheetUpLeft = pygame.image.load('sprites/TopDownCharacter/Character/Character_UpLeft.png')
         self.spritesheetUpRight = pygame.image.load('sprites/TopDownCharacter/Character/Character_UpRight.png')
         
+        self.shoot_interval = 10
+        self.time_last_shoot = 300
+        self.bullet_list = []
+        self.timetrack = []
+        self.timetracklen = 30
         #self.ss = SpriteSheet('sprites/TopDownCharacter/Character/Character_Down.png')
         self.ss = self.spritesheetDown
         #self.spriteIdle = self.spriteDown
@@ -28,7 +34,7 @@ class Hero(GameObject):
         self.sprite = pygame.transform.scale(self.ss.subsurface(pygame.Rect(0,0,32,32)), (100,100))
         self.is_rewinding = False
         self.current_sprite_number = 0
-
+        self.can_shoot = True
         self.can_rewind = False
     
 
@@ -90,17 +96,18 @@ class Hero(GameObject):
         self.updateSprite()
         #print(self.velocity)
         if self.velocity[0] == 0 or self.velocity[1] == 0:
-            scale_factor = 10
+            self.scalar_velocity = 10
         else:
-            scale_factor = 10 / np.sqrt(2)
-        self.velocity = [i * scale_factor for i in self.velocity]
+            self.scalar_velocity = 10 / np.sqrt(2)
+        self.velocity = [i * self.scalar_velocity for i in self.velocity]
         #print(self.velocity)
         self.move_ip(self.velocity[0], self.velocity[1])
     
     def get_correct_position_to_blit(self):
-        return (self.getRect()[0] - self.w -2, self.getRect()[1] - self.h)
+        return (self.getRect()[0] - 27, self.getRect()[1] - 32)
 
     def stop(self):
+        self.velocity = [0, 0]
         self.stopLeftRigth()
         self.stopUpDown()
 
@@ -111,6 +118,10 @@ class Hero(GameObject):
         else:
             self.sprite = chronosinfo[0]
             self.clamp_ip(chronosinfo[2])
+    
+    def shoot(self):
+        self.time_last_shoot = 0
+        self.can_shoot = False
 
 
 
