@@ -8,7 +8,9 @@ from .Spritesheet import SpriteSheet
 class Hero(GameObject):
 
     def __init__(self):
-        GameObject.__init__(self, width=48, height=48, position = [pygame.display.Info().current_w/2, pygame.display.Info().current_h/2])
+        self.screen_width = pygame.display.Info().current_w
+        self.screen_height = pygame.display.Info().current_h
+        GameObject.__init__(self, width=48, height=48, position = [pygame.display.Info().current_w/2, pygame.display.Info().current_h/1.2])
         self.scalar_velocity = 5
         #Load all Hero sprites
         self.spritesheetUp = pygame.image.load('sprites/TopDownCharacter/Character/Character_Up.png')
@@ -24,6 +26,7 @@ class Hero(GameObject):
         self.shoot_interval = 10
         self.time_last_shoot = 300
         self.bullet_list = []
+        self.bullet_color = (0, 0, 255)
         self.timetrack = []
         self.timetracklen = 30
         #self.ss = SpriteSheet('sprites/TopDownCharacter/Character/Character_Down.png')
@@ -101,6 +104,10 @@ class Hero(GameObject):
             self.scalar_velocity = 10 / np.sqrt(2)
         self.velocity = [i * self.scalar_velocity for i in self.velocity]
         #print(self.velocity)
+        if self.bottom + self.velocity[1] > self.screen_height or self.top + self.velocity[1] < 0:
+            self.velocity[1] = 0
+        if self.left + self.velocity[0] < 0 or self.right + self.velocity[0] > self.screen_width:
+            self.velocity[0] = 0
         self.move_ip(self.velocity[0], self.velocity[1])
     
     def get_correct_position_to_blit(self):
@@ -123,8 +130,10 @@ class Hero(GameObject):
         self.time_last_shoot = 0
         self.can_shoot = False
 
-
-
+    def check_collision(self, rect):
+        if self.colliderect(rect):
+            return True
+        return False
 
 
 

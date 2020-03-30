@@ -7,6 +7,7 @@ from classes.EventManager import EventManager
 from classes.Hero import Hero
 from classes.Aim import Aim
 from classes.Bullet import Bullet
+from classes.Boss_1 import Boss_1
 import numpy as np
 from numpy import linalg as LA
 import time
@@ -28,6 +29,9 @@ class GameManager():
         #Instantiating hero and aim
         self.hero = Hero()
         self.aim = Aim(pygame.mouse.get_pos())
+
+        #Boss
+        self.boss = Boss_1()
 
     def onInit(self):
 
@@ -103,24 +107,48 @@ class GameManager():
         #Update hero, aim and bullets positions
         self.hero.updatePosition()
         self.aim.updateToPosition(pygame.mouse.get_pos())
-        for bullet in self.hero.bullet_list:
-            bullet.update_position()
-            if bullet.keep_on_screen == False:
-                self.hero.bullet_list.remove(bullet)
+        for bullet_list in [self.hero.bullet_list, self.boss.bullet_list]:
+            for bullet in bullet_list:
+
+                bullet.update_position()
+
+                if bullet.keep_on_screen == False:
+                    bullet_list.remove(bullet)
+        
+        for boss_bullet in self.boss.bullet_list:
+            if self.hero.check_collision(boss_bullet.getRect()) and not self.hero.is_rewinding:
+                self.boss.bullet_list.remove(boss_bullet)
+            
+        # for bullet in self.boss.bullet_list:
+        #     bullet.update_position()
+        #     if bullet.keep_on_screen == False:
+        #         self.boss.bullet_list.remove(bullet)
+
         self.hero.time_last_shoot = self.hero.time_last_shoot + 1
+        self.boss.time_last_attack = self.boss.time_last_attack + 1
+
+        self.boss.updatePosition((self.hero.centerx, self.hero.centery))
+
+        if self.boss.can_attack:
+            self.boss.attack()
+
+
+        if self.boss.time_last_attack > self.boss.attack_interval:
+            self.boss.can_attack = True
 
         if self.hero.time_last_shoot > self.hero.shoot_interval:
             self.hero.can_shoot = True
         #Auxiliary counter
         self.count = (self.count + 1) % 30
 
+
     def toggleFullscreen(self):
             pygame.display.toggle_fullscreen()
             
     def onRender(self):
         #Render Background
-        self.screen.fill((100,100,100))
-        #pygame.draw.rect(self.screen, (155,155,155) , self.hero.getRect())
+        self.screen.fill((50,50,50))
+
         
         #Create and update timetrack
         if not self.hero.is_rewinding:
@@ -155,13 +183,19 @@ class GameManager():
 
         #Render hero
         self.screen.blit(self.hero.sprite, self.hero.get_correct_position_to_blit())
-        
+        #pygame.draw.rect(self.screen, (155,155,155) , self.hero.getRect())
+
+        #Boss
+        pygame.draw.rect(self.screen, (0,0,0) , self.boss.getRect())
+
         #Render aim
         pygame.draw.circle(self.screen, self.aim.color, self.aim.position, self.aim.radius, self.aim.thick)
 
-        #Render hero bullets
-        for bullet in self.hero.bullet_list:
-            pygame.draw.circle(self.screen, (255, 0, 255), (bullet.centerx, bullet.centery), 10, 10)
+        #Render bullets
+        for bullet_list, owner in zip([self.hero.bullet_list, self.boss.bullet_list], [self.hero, self.boss]):
+            for bullet in bullet_list:
+                pygame.draw.circle(self.screen, owner.bullet_color, (bullet.centerx, bullet.centery), 10, 10)
+            #pygame.draw.rect(self.screen, (0,0,0) , bullet.getRect())
 
         #Display refresh
         pygame.display.flip()
