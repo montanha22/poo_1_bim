@@ -3,7 +3,6 @@ import glob
 #import definitions
 from .GameObject import GameObject
 import numpy as np
-import cv2
 from .Spritesheet import SpriteSheet
 class Hero(GameObject):
 
