@@ -31,13 +31,13 @@ class Boss_1 (GameObject):
         if self.fixed_in_the_middle:
             self.velocity = np.array([0, 0])
 
-        print(self.velocity)
+        #print(self.velocity)
 
         self.fix_velocity_scale()
         self.position = self.position + self.velocity
 
-        print(self.velocity)
-        print(self.position)
+        #print(self.velocity)
+        #print(self.position)
         self.clamp_ip(pygame.Rect(self.position[0], self.position[1], self.width, self.height))
 
     def attack(self):

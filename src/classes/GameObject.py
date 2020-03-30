@@ -28,8 +28,8 @@ class GameObject(pygame.Rect):
 
             self.abs_speed = np.sqrt(self.velocity[0] ** 2 + self.velocity[1] ** 2)
 
-            print(self.velocity/self.abs_speed)
-            print(float(1.0 * self.scalar_velocity * self.velocity[0] / self.abs_speed))
+            #print(self.velocity/self.abs_speed)
+            #print(float(1.0 * self.scalar_velocity * self.velocity[0] / self.abs_speed))
             self.velocity[0] = float(1.0 * self.scalar_velocity * self.velocity[0] / self.abs_speed)
             self.velocity[1] = float(1.0 * self.scalar_velocity * self.velocity[1] / self.abs_speed)
 
