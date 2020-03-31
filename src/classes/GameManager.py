@@ -188,6 +188,9 @@ class GameManager():
         #Boss
         pygame.draw.rect(self.screen, (0,0,0) , self.boss.getRect())
 
+        #Boss Weak Points
+        pygame.draw.circle(self.screen, self.boss.weak_spots.color, (int(self.boss.weak_spots.position[0]), int(self.boss.weak_spots.position[1])), self.boss.weak_spots.radius, 0)
+
         #Render aim
         pygame.draw.circle(self.screen, self.aim.color, self.aim.position, self.aim.radius, self.aim.thick)
 

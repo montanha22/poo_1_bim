@@ -3,10 +3,10 @@ import pygame
 import numpy as np
 from .Bullet import Bullet
 from math import atan2
+from .WeakPoint import WeakPoint
 class Boss_1 (GameObject):
     def __init__(self):
         GameObject.__init__(self, position = [float(pygame.display.Info().current_w/2), float(pygame.display.Info().current_h/2)], width = 200, height = 200)
-        
         self.scalar_velocity = 3
 
         self.bullet_list = []
@@ -21,6 +21,15 @@ class Boss_1 (GameObject):
 
         self.bullet_color = (255, 0, 0)
         self.direction = np.array([0.0, 0.0])
+
+
+        self.eye_got_hit = False
+
+        self.rotation_speed = 0.5
+        self.radius = 250
+        self.n_weak_spots = 1
+        self.weak_spots = WeakPoint(self.position, self.radius, self.direction, 20)
+        
 
     def updatePosition(self, player_position):
         self.direction = np.array((player_position[0] , player_position[1])) -  np.array((self.centerx, self.centery))
@@ -39,6 +48,11 @@ class Boss_1 (GameObject):
         #print(self.velocity)
         #print(self.position)
         self.clamp_ip(pygame.Rect(self.position[0], self.position[1], self.width, self.height))
+
+        self.weak_spots.update_position( np.array((self.centerx, self.centery)), self.direction, self.eye_got_hit)
+    
+
+
 
     def attack(self):
         self.attack_interval = np.random.randint(30,50)
@@ -60,3 +74,8 @@ class Boss_1 (GameObject):
                     scalar_velocity = 3
                 )
             )
+    
+    def rotate_center(self, angle):
+        """rotate an image while keeping its center"""
+        pass
+
