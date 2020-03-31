@@ -118,6 +118,15 @@ class GameManager():
         for boss_bullet in self.boss.bullet_list:
             if self.hero.check_collision(boss_bullet.getRect()) and not self.hero.is_rewinding:
                 self.boss.bullet_list.remove(boss_bullet)
+        
+        for hero_bullet in self.hero.bullet_list:
+            if self.boss.check_collision(hero_bullet.getRect()):
+                self.hero.bullet_list.remove(hero_bullet)
+            elif self.boss.boss_eye.check_collision(hero_bullet.getRect()) and not self.boss.eye_got_hit:
+                self.hero.bullet_list.remove(hero_bullet)
+                self.boss.eye_got_hit = True
+                self.boss.time_last_paralized = 0
+
             
         # for bullet in self.boss.bullet_list:
         #     bullet.update_position()
@@ -126,12 +135,14 @@ class GameManager():
 
         self.hero.time_last_shoot = self.hero.time_last_shoot + 1
         self.boss.time_last_attack = self.boss.time_last_attack + 1
-
+        self.boss.time_last_paralized = self.boss.time_last_paralized + 1
         self.boss.updatePosition((self.hero.centerx, self.hero.centery))
 
         if self.boss.can_attack:
             self.boss.attack()
 
+        if self.boss.time_paralized < self.boss.time_last_paralized:
+                self.boss.eye_got_hit = False
 
         if self.boss.time_last_attack > self.boss.attack_interval:
             self.boss.can_attack = True
@@ -187,12 +198,14 @@ class GameManager():
 
         #Boss
         pygame.draw.circle(self.screen, (0,0,0), (self.boss.centerx, self.boss.centery), self.boss.radius, self.boss.radius)
-
+        #pygame.draw.rect(self.screen, (155,155,155), self.boss.getRect())
+        
         #Boss Eye
-        pygame.draw.circle(self.screen, self.boss.boss_eye.color, (int(self.boss.boss_eye.position[0]), int(self.boss.boss_eye.position[1])), self.boss.boss_eye.radius, 0)
-
+        pygame.draw.circle(self.screen, self.boss.boss_eye.color, (int(self.boss.boss_eye.position[0]), int(self.boss.boss_eye.position[1])), self.boss.boss_eye.radius, self.boss.boss_eye.radius)
+        #pygame.draw.rect(self.screen, (155,155,155), self.boss.boss_eye.getRect())
+        
         #Boss Weak Points
-        pygame.draw.circle(self.screen, self.boss.weak_spots.color, (int(self.boss.weak_spots.position[0]), int(self.boss.weak_spots.position[1])), self.boss.weak_spots.radius, 0)
+        pygame.draw.circle(self.screen, self.boss.weak_spots.color, (int(self.boss.weak_spots.position[0]), int(self.boss.weak_spots.position[1])), self.boss.weak_spots.radius, self.boss.boss_eye.radius)
 
         #Render aim
         pygame.draw.circle(self.screen, self.aim.color, self.aim.position, self.aim.radius, self.aim.thick)
@@ -200,8 +213,8 @@ class GameManager():
         #Render bullets
         for bullet_list, owner in zip([self.hero.bullet_list, self.boss.bullet_list], [self.hero, self.boss]):
             for bullet in bullet_list:
-                pygame.draw.circle(self.screen, owner.bullet_color, (bullet.centerx, bullet.centery), 10, 10)
-            #pygame.draw.rect(self.screen, (0,0,0) , bullet.getRect())
+                pygame.draw.circle(self.screen, owner.bullet_color, (bullet.centerx, bullet.centery), bullet.radius, bullet.radius)
+                #pygame.draw.rect(self.screen, (0,0,0) , bullet.getRect())
 
         #Display refresh
         pygame.display.flip()

@@ -18,9 +18,9 @@ class WeakPoint (GameObject):
     def update_position(self, boss_position, boss_direction, eye_got_hit):
 
         if not eye_got_hit:
-            self.position[0] = boss_position[0] - self.boss_radius * boss_direction[0] / np.sqrt(boss_direction[0] ** 2 + boss_direction[1] ** 2)
+            self.position[0] = boss_position[0] - self.boss_radius * boss_direction[0] / np.sqrt(boss_direction[0] ** 2 + boss_direction[1] ** 2) 
             self.position[1] = boss_position[1] - self.boss_radius * boss_direction[1] / np.sqrt(boss_direction[0] ** 2 + boss_direction[1] ** 2)
-            self.clamp_ip(pygame.Rect(self.position[0], self.position[1], self.width, self.height))
+            self.clamp_ip(pygame.Rect(self.position[0]-self.radius, self.position[1]-self.radius, self.width, self.height))
         
         if self.got_hit:
             self.color = (0, 0, 0)

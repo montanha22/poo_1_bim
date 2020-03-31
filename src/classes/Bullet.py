@@ -10,7 +10,7 @@ class Bullet (GameObject):
             self.limity = pygame.display.Info().current_h
 
             self.position = np.array(start_position)
-
+            self.radius = 10
             self.abs_speed = np.sqrt(self.velocity[0] ** 2 + self.velocity[1] ** 2)
 
             self.velocity[0] = self.scalar_velocity * self.velocity[0] / self.abs_speed
