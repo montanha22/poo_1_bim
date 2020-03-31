@@ -22,12 +22,11 @@ class Boss_1 (GameObject):
         self.bullet_color = (255, 0, 0)
         self.direction = np.array([0.0, 0.0])
 
-
+        
         self.eye_got_hit = False
-
-        self.rotation_speed = 0.5
-        self.radius = 250
+        self.radius = 100
         self.n_weak_spots = 1
+        self.boss_eye = BossEye(self.position, self.radius, self.direction, 20)
         self.weak_spots = WeakPoint(self.position, self.radius, self.direction, 20)
         
 
@@ -50,6 +49,7 @@ class Boss_1 (GameObject):
         self.clamp_ip(pygame.Rect(self.position[0], self.position[1], self.width, self.height))
 
         self.weak_spots.update_position( np.array((self.centerx, self.centery)), self.direction, self.eye_got_hit)
+        self.boss_eye.update_position( np.array((self.centerx, self.centery)), self.direction, self.eye_got_hit)
     
 
 
@@ -79,3 +79,25 @@ class Boss_1 (GameObject):
         """rotate an image while keeping its center"""
         pass
 
+    
+class BossEye (GameObject):
+    def __init__(self, boss_position = [0, 0], boss_radius = 10, boss_direction = [1, 0], radius = 10, color = (255, 0, 0)):
+        GameObject.__init__(self, position = boss_position, velocity = np.array([1, 0]), width = 2*radius, height = 2*radius, scalar_velocity = 0)
+        
+        self.limitx = pygame.display.Info().current_w
+        self.limity = pygame.display.Info().current_h
+        self.radius = radius
+        self.boss_radius = boss_radius
+    
+        self.color = color
+        self.got_hit = False
+
+    def update_position(self, boss_position, boss_direction, eye_got_hit):
+
+        if not eye_got_hit:
+            self.position[0] = boss_position[0] + self.boss_radius * boss_direction[0] / np.sqrt(boss_direction[0] ** 2 + boss_direction[1] ** 2)
+            self.position[1] = boss_position[1] + self.boss_radius * boss_direction[1] / np.sqrt(boss_direction[0] ** 2 + boss_direction[1] ** 2)
+            self.clamp_ip(pygame.Rect(self.position[0], self.position[1], self.width, self.height))
+        
+        if self.got_hit:
+            self.color = (0, 0, 0)  

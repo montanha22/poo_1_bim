@@ -186,7 +186,10 @@ class GameManager():
         #pygame.draw.rect(self.screen, (155,155,155) , self.hero.getRect())
 
         #Boss
-        pygame.draw.rect(self.screen, (0,0,0) , self.boss.getRect())
+        pygame.draw.circle(self.screen, (0,0,0), (self.boss.centerx, self.boss.centery), self.boss.radius, self.boss.radius)
+
+        #Boss Eye
+        pygame.draw.circle(self.screen, self.boss.boss_eye.color, (int(self.boss.boss_eye.position[0]), int(self.boss.boss_eye.position[1])), self.boss.boss_eye.radius, 0)
 
         #Boss Weak Points
         pygame.draw.circle(self.screen, self.boss.weak_spots.color, (int(self.boss.weak_spots.position[0]), int(self.boss.weak_spots.position[1])), self.boss.weak_spots.radius, 0)
