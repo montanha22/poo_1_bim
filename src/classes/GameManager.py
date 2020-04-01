@@ -127,6 +127,11 @@ class GameManager():
                 self.boss.eye_got_hit = True
                 self.boss.time_last_paralized = 0
 
+            elif self.boss.weak_spots.check_collision(hero_bullet.getRect()):
+                self.hero.bullet_list.remove(hero_bullet)
+                self.boss.weak_spots.got_hit = True
+
+
             
         # for bullet in self.boss.bullet_list:
         #     bullet.update_position()
@@ -197,16 +202,18 @@ class GameManager():
         #pygame.draw.rect(self.screen, (155,155,155) , self.hero.getRect())
 
         #Boss
-        pygame.draw.circle(self.screen, (0,0,0), (self.boss.centerx, self.boss.centery), self.boss.radius, self.boss.radius)
-        #pygame.draw.rect(self.screen, (155,155,155), self.boss.getRect())
+        if not self.boss.weak_spots.got_hit:
+            if not self.boss.weak_got_hit:
+                pygame.draw.circle(self.screen, (0,0,0), (self.boss.centerx, self.boss.centery), self.boss.radius, self.boss.radius)
+                #pygame.draw.rect(self.screen, (155,155,155), self.boss.getRect())
+                
+                #Boss Eye
+                pygame.draw.circle(self.screen, self.boss.boss_eye.color, (int(self.boss.boss_eye.position[0]), int(self.boss.boss_eye.position[1])), self.boss.boss_eye.radius, self.boss.boss_eye.radius)
+                #pygame.draw.rect(self.screen, (155,155,155), self.boss.boss_eye.getRect())
+                
+                #Boss Weak Points
+                pygame.draw.circle(self.screen, self.boss.weak_spots.color, (int(self.boss.weak_spots.position[0]), int(self.boss.weak_spots.position[1])), self.boss.weak_spots.radius, self.boss.boss_eye.radius)
         
-        #Boss Eye
-        pygame.draw.circle(self.screen, self.boss.boss_eye.color, (int(self.boss.boss_eye.position[0]), int(self.boss.boss_eye.position[1])), self.boss.boss_eye.radius, self.boss.boss_eye.radius)
-        #pygame.draw.rect(self.screen, (155,155,155), self.boss.boss_eye.getRect())
-        
-        #Boss Weak Points
-        pygame.draw.circle(self.screen, self.boss.weak_spots.color, (int(self.boss.weak_spots.position[0]), int(self.boss.weak_spots.position[1])), self.boss.weak_spots.radius, self.boss.boss_eye.radius)
-
         #Render aim
         pygame.draw.circle(self.screen, self.aim.color, self.aim.position, self.aim.radius, self.aim.thick)
 

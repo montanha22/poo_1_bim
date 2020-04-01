@@ -6,7 +6,7 @@ from math import atan2
 from .WeakPoint import WeakPoint
 class Boss_1 (GameObject):
     def __init__(self):
-        GameObject.__init__(self, position = [float(pygame.display.Info().current_w/2), float(pygame.display.Info().current_h/2)], width = 190, height = 190)
+        GameObject.__init__(self, position = [float(pygame.display.Info().current_w/2), float(pygame.display.Info().current_h/2)], width = 200, height = 200)
         self.scalar_velocity = 3
 
         self.bullet_list = []
@@ -21,12 +21,11 @@ class Boss_1 (GameObject):
 
         self.bullet_color = (255, 0, 0)
         self.direction = np.array([0.0, 0.0])
-
-        self.time_paralized = 75
-        self.time_last_paralized = 76
+        self.weak_got_hit = False
+        self.time_paralized = 750
+        self.time_last_paralized = 760
         self.eye_got_hit = False
-        self.radius = 120
-        self.n_weak_spots = 1
+        self.radius = 141
         self.boss_eye = BossEye(self.position, self.radius, self.direction, 20)
         self.weak_spots = WeakPoint(self.position, self.radius, self.direction, 20)
         
@@ -58,8 +57,7 @@ class Boss_1 (GameObject):
 
 
     def attack(self):
-
-        if not self.eye_got_hit:
+        if not self.eye_got_hit and not self.weak_spots.got_hit:
             self.attack_interval = np.random.randint(30,50)
             self.time_last_attack = 0
             self.can_attack = False
@@ -88,6 +86,7 @@ class Boss_1 (GameObject):
         if self.colliderect(rect):
             return True
         return False
+    
     
     
 class BossEye (GameObject):

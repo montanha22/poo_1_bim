@@ -24,6 +24,11 @@ class WeakPoint (GameObject):
         
         if self.got_hit:
             self.color = (0, 0, 0)
+    
+    def check_collision(self, rect):
+        if self.colliderect(rect):
+            return True
+        return False
             
 
 
