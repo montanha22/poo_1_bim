@@ -8,7 +8,7 @@ class Aim(GameObject):
         GameObject.__init__(self)
         self.position = pos
         self.color = (255, 255, 0)
-        self.radius = 20
+        self.radius = 5
         self.thick = 1
 
     def updateToPosition(self, pos):
