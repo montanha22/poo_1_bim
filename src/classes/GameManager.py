@@ -8,9 +8,11 @@ from classes.Hero import Hero
 from classes.Aim import Aim
 from classes.Bullet import Bullet
 from classes.Boss_1 import Boss_1
+from classes.MainMenu import MainMenu
 import numpy as np
 from numpy import linalg as LA
 import time
+import pygameMenu
 
 class GameManager():
     def __init__(self):
@@ -20,7 +22,11 @@ class GameManager():
 
         #Some needed stuff
         self._running = True
-        self.screen = pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+
+        #Change window resolution later
+        self.window_resolution=(1920,1080)
+        
+        self.screen = pygame.display.set_mode(self.window_resolution, pygame.RESIZABLE)
         self.stage = 1
         self.count = 0
         self.clock = pygame.time.Clock()
@@ -243,7 +249,7 @@ class GameManager():
             #Fps limit
             self.clock.tick(60)
 
-            #Get keys presseds and mouse infos
+            #Get keys pressed and mouse infos
             self.onEvent()
 
             #Act and update 
@@ -255,3 +261,6 @@ class GameManager():
         #Finish all
         self.onCleanup()
 
+    def onMainMenu(self):
+        self.main_menu=MainMenu(self.window_resolution,self.clock,self)
+        self.main_menu.mainloop(self.screen)
