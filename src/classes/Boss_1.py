@@ -5,8 +5,8 @@ from .Bullet import Bullet
 from math import atan2
 from .WeakPoint import WeakPoint
 class Boss_1 (GameObject):
-    def __init__(self):
-        GameObject.__init__(self, position = [float(pygame.display.Info().current_w/2), float(pygame.display.Info().current_h/2)], width = 200, height = 200)
+    def __init__(self,resolution):
+        GameObject.__init__(self, position = [float(resolution[0]/2), float(resolution[1]/2)], width = 200, height = 200)
         self.scalar_velocity = 3
 
         self.bullet_list = []

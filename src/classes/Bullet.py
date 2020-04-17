@@ -6,8 +6,8 @@ class Bullet (GameObject):
 
     def __init__(self, direction = [1, 0], start_position = [500, 500], width = 20, height = 20, scalar_velocity = 20):
             GameObject.__init__(self, position = start_position, velocity = np.array(direction), width = width, height = height, scalar_velocity = scalar_velocity)
-            self.limitx = pygame.display.Info().current_w
-            self.limity = pygame.display.Info().current_h
+            self.limitx = 1920
+            self.limity = 1080
 
             self.position = np.array(start_position)
             self.radius = 10
@@ -19,7 +19,7 @@ class Bullet (GameObject):
             self.keep_on_screen = True
 
     def update_position(self):
-
+        
         self.position = self.position + self.velocity
         self.clamp_ip(pygame.Rect(self.position[0], self.position[1], self.width, self.height))
         

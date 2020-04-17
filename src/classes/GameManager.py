@@ -8,41 +8,64 @@ from classes.Hero import Hero
 from classes.Aim import Aim
 from classes.Bullet import Bullet
 from classes.Boss_1 import Boss_1
-from classes.MainMenu import MainMenu
+import classes.Menu
 import numpy as np
 from numpy import linalg as LA
 import time
 import pygameMenu
+import ast
 
 class GameManager():
     def __init__(self):
 
         #Pygame initialization
         pygame.init()
+        icon=pygame.image.load("sprites/icon.png")
+        pygame.display.set_icon(icon)
+        pygame.display.set_caption("Boss Slayer")
 
         #Some needed stuff
         self._running = True
 
-        #Change window resolution later
-        self.window_resolution=(1920,1080)
+        #Read config file
+
+        f = open('src/config.txt', 'r')
+
+        config = f.read()
+        config = ast.literal_eval(config)
+
+        f.close()
+
+        #Window resolution
+        self.window_resolution=config["resolution"]
+        self.original_resolution=(1920,1080)
+        self.monitor_resolution = (pygame.display.Info().current_w, pygame.display.Info().current_h) #Needs to be before screen and fake_screen declaration
+        self.fullscreen = config["fullscreen"]
+
+        #Text font
+        self.font = pygame.font.Font("sprites/menu/kenvector_future.ttf", 20)
         
-        self.screen = pygame.display.set_mode(self.window_resolution, pygame.RESIZABLE)
+        self.screen = pygame.display.set_mode(self.original_resolution, pygame.NOFRAME)
+        self.fake_screen=self.screen.copy()
+        if self.fullscreen:
+            pygame.event.post(pygame.event.Event(pygame.USEREVENT + 1))
+        else:
+            pygame.event.post(pygame.event.Event(pygame.VIDEORESIZE, size = self.window_resolution, w = self.window_resolution[0],h=self.window_resolution[1]))
+
         self.stage = 1
         self.count = 0
         self.clock = pygame.time.Clock()
-        self.fullscreen = True
 
         #Instantiating hero and aim
-        self.hero = Hero()
-        self.aim = Aim(pygame.mouse.get_pos())
+        self.hero = Hero(self.original_resolution)
+        self.mousepos=pygame.mouse.get_pos()
+        self.aim = Aim(self.mousepos)
 
         #Boss
-        self.boss = Boss_1()
+        self.boss = Boss_1(self.original_resolution)
 
     def onInit(self):
 
-        #Resizable resizes the display but game doesnt scale up nor down
-        self.fullscreen = True
         self._running = True
 
     def onEvent(self):
@@ -54,13 +77,11 @@ class GameManager():
         #Checking if the window was closed or ESC was pressed (quit game) or F10 was pressed (toggle fullscreen)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self._running = False
+                self.onCleanup()
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                self._running = False
-
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_F10:
-                self.toggleFullscreen()
+                classes.Menu.pause_menu(self)
+                return
             
         #Creating booleans for hero actions keys
         up = (pressed[pygame.K_w] or pressed[pygame.K_UP])
@@ -112,7 +133,7 @@ class GameManager():
 
         #Update hero, aim and bullets positions
         self.hero.updatePosition()
-        self.aim.updateToPosition(pygame.mouse.get_pos())
+        self.aim.updateToPosition(self.mousepos)
         for bullet_list in [self.hero.bullet_list, self.boss.bullet_list]:
             for bullet in bullet_list:
 
@@ -124,6 +145,9 @@ class GameManager():
         for boss_bullet in self.boss.bullet_list:
             if self.hero.check_collision(boss_bullet.getRect()) and not self.hero.is_rewinding:
                 self.boss.bullet_list.remove(boss_bullet)
+                #Player dies
+                classes.Menu.game_over(self)
+                return
         
         for hero_bullet in self.hero.bullet_list:
             if self.boss.check_collision(hero_bullet.getRect()):
@@ -163,13 +187,10 @@ class GameManager():
         #Auxiliary counter
         self.count = (self.count + 1) % 30
 
-
-    def toggleFullscreen(self):
-            pygame.display.toggle_fullscreen()
             
     def onRender(self):
         #Render Background
-        self.screen.fill((50,50,50))
+        self.fake_screen.fill((50,50,50))
 
         
         #Create and update timetrack
@@ -196,43 +217,54 @@ class GameManager():
                 temp = trail[0].copy()
                 temp.fill((0,0,255, 100), special_flags = pygame.BLEND_RGBA_MULT)
                 #print(temp.get_alpha())
-                self.screen.blit(temp, trail[1]) 
+                self.fake_screen.blit(temp, trail[1]) 
     
         #Make last timetrack position more darker
         if len(self.hero.timetrack) != 0:
             self.hero.timetrack[0][0].fill((0,0,255,255), special_flags = pygame.BLEND_RGBA_MULT)
-            self.screen.blit(self.hero.timetrack[0][0], self.hero.timetrack[0][1])
+            self.fake_screen.blit(self.hero.timetrack[0][0], self.hero.timetrack[0][1])
 
         #Render hero
-        self.screen.blit(self.hero.sprite, self.hero.get_correct_position_to_blit())
+        self.fake_screen.blit(self.hero.sprite, self.hero.get_correct_position_to_blit())
         #pygame.draw.rect(self.screen, (155,155,155) , self.hero.getRect())
 
         #Boss
         if not self.boss.weak_spots.got_hit:
             if not self.boss.weak_got_hit:
-                pygame.draw.circle(self.screen, (0,0,0), (self.boss.centerx, self.boss.centery), self.boss.radius, self.boss.radius)
+                pygame.draw.circle(self.fake_screen, (0,0,0), (self.boss.centerx, self.boss.centery), self.boss.radius, self.boss.radius)
                 #pygame.draw.rect(self.screen, (155,155,155), self.boss.getRect())
                 
                 #Boss Eye
-                pygame.draw.circle(self.screen, self.boss.boss_eye.color, (int(self.boss.boss_eye.position[0]), int(self.boss.boss_eye.position[1])), self.boss.boss_eye.radius, self.boss.boss_eye.radius)
+                pygame.draw.circle(self.fake_screen, self.boss.boss_eye.color, (int(self.boss.boss_eye.position[0]), int(self.boss.boss_eye.position[1])), self.boss.boss_eye.radius, self.boss.boss_eye.radius)
                 #pygame.draw.rect(self.screen, (155,155,155), self.boss.boss_eye.getRect())
                 
                 #Boss Weak Points
-                pygame.draw.circle(self.screen, self.boss.weak_spots.color, (int(self.boss.weak_spots.position[0]), int(self.boss.weak_spots.position[1])), self.boss.weak_spots.radius, self.boss.boss_eye.radius)
+                pygame.draw.circle(self.fake_screen, self.boss.weak_spots.color, (int(self.boss.weak_spots.position[0]), int(self.boss.weak_spots.position[1])), self.boss.weak_spots.radius, self.boss.boss_eye.radius)
         
         #Render aim
-        pygame.draw.circle(self.screen, self.aim.color, self.aim.position, self.aim.radius, self.aim.thick)
+        pygame.draw.circle(self.fake_screen, self.aim.color, self.aim.position, self.aim.radius, self.aim.thick)
 
         #Render bullets
         for bullet_list, owner in zip([self.hero.bullet_list, self.boss.bullet_list], [self.hero, self.boss]):
             for bullet in bullet_list:
-                pygame.draw.circle(self.screen, owner.bullet_color, (bullet.centerx, bullet.centery), bullet.radius, bullet.radius)
+                pygame.draw.circle(self.fake_screen, owner.bullet_color, (bullet.centerx, bullet.centery), bullet.radius, bullet.radius)
                 #pygame.draw.rect(self.screen, (0,0,0) , bullet.getRect())
 
         #Display refresh
+        self.screen.blit(pygame.transform.scale(self.fake_screen, self.window_resolution), (0, 0))
         pygame.display.flip()
 
+        #Fix mouse position because of resizing
+        self.mousepos = list(pygame.mouse.get_pos())
+        self.mousepos = [int(self.mousepos[0]*self.original_resolution[0]/self.window_resolution[0]),int(self.mousepos[1]*self.original_resolution[1]/self.window_resolution[1])]
+        self.mousepos=tuple(self.mousepos)
+
     def onCleanup(self):
+        #Write settings on configuration file
+        config = {"fullscreen":self.fullscreen,"resolution":self.window_resolution}
+        f = open('src/config.txt', 'w')
+        f.write(str(config))
+        f.close()
 
         #Quit game
         pygame.quit()
@@ -244,23 +276,67 @@ class GameManager():
         if self.onInit() == False:
             self._running = False
         
-        #Infinite loop
+        #Infinite loopgm.restartGame()
         while(self._running):
             #Fps limit
             self.clock.tick(60)
 
-            #Get keys pressed and mouse infos
-            self.onEvent()
+            if(self._running):
+                #Get keys pressed and mouse infos
+                self.onEvent()
 
-            #Act and update 
-            self.onLoop()
+            if(self._running):
+                #Act and update 
+                self.onLoop()
 
-            #Render
-            self.onRender()
+            #This if is needed when the player dies, so it doesnt render the game when going though menus
+            if(self._running):
+                #Render
+                self.onRender()
         
         #Finish all
-        self.onCleanup()
+        #self.onCleanup()
 
     def onMainMenu(self):
-        self.main_menu=MainMenu(self.window_resolution,self.clock,self)
-        self.main_menu.mainloop(self.screen)
+
+        #Adjust initial screen resolution
+        for event in pygame.event.get():
+            if event.type == pygame.VIDEORESIZE:
+                    self.fullscreen = False
+                    self.window_resolution=event.size
+                    self.screen = pygame.display.set_mode(event.size)
+                    self.screen.blit(pygame.transform.scale(self.fake_screen, self.window_resolution), (0, 0))
+                    pygame.display.flip()
+                
+            if event.type == pygame.USEREVENT + 1:
+                self.fullscreen = True
+                self.window_resolution = self.monitor_resolution
+                self.screen = pygame.display.set_mode(self.window_resolution, pygame.FULLSCREEN)
+                self.screen.blit(pygame.transform.scale(self.fake_screen, self.window_resolution), (0, 0))
+                pygame.display.flip()
+
+        classes.Menu.main_menu(self)
+
+    def endGame(self):
+        #Delete last session
+        del self.hero
+        del self.aim
+        del self.boss
+
+        self._running = False
+
+    def restartGame(self):
+
+        #Some needed stuff
+        self._running = True
+        
+        self.stage = 1
+        self.count = 0
+
+        #Instantiating hero and aim
+        self.hero = Hero(self.original_resolution)
+        self.mousepos=pygame.mouse.get_pos()
+        self.aim = Aim(self.mousepos)
+
+        #Boss
+        self.boss = Boss_1(self.original_resolution)

@@ -6,10 +6,10 @@ import numpy as np
 from .Spritesheet import SpriteSheet
 class Hero(GameObject):
 
-    def __init__(self):
-        self.screen_width = pygame.display.Info().current_w
-        self.screen_height = pygame.display.Info().current_h
-        GameObject.__init__(self, width=48, height=48, position = [pygame.display.Info().current_w/2, pygame.display.Info().current_h/1.2])
+    def __init__(self,resolution):
+        self.screen_width = resolution[0]
+        self.screen_height = resolution[1]
+        GameObject.__init__(self, width=48, height=48, position = [self.screen_width/2, self.screen_height/1.2])
         self.scalar_velocity = 5
         #Load all Hero sprites
         self.spritesheetUp = pygame.image.load('sprites/TopDownCharacter/Character/Character_Up.png')
@@ -33,7 +33,8 @@ class Hero(GameObject):
         #self.spriteIdle = self.spriteDown
         #print(self.spriteDown_list)
         #Hero actual sprite
-        self.sprite = pygame.transform.scale(self.ss.subsurface(pygame.Rect(0,0,32,32)), (100,100))
+        self.sprite_size = (100,100)
+        self.sprite = pygame.transform.scale(self.ss.subsurface(pygame.Rect(0,0,32,32)), self.sprite_size)
         self.is_rewinding = False
         self.current_sprite_number = 0
         self.can_shoot = True
@@ -65,7 +66,7 @@ class Hero(GameObject):
         self.velocity[1] = 0
 
     def updateSprite(self):
-
+        
         if self.velocity[0] == 1:
             if self.velocity[1] == 1:
                 self.sprite = self.spritesheetDownRight
@@ -88,10 +89,10 @@ class Hero(GameObject):
             elif self.velocity[1] == -1:
                 self.sprite = self.spritesheetUp
             else:
-                self.sprite = pygame.transform.scale(self.spritesheetDown.subsurface(pygame.Rect(0,0,32,32)), (100, 100))
+                self.sprite = pygame.transform.scale(self.spritesheetDown.subsurface(pygame.Rect(0,0,32,32)), self.sprite_size)
                 return None
         self.current_sprite_number = (self.current_sprite_number + 1) % 4
-        self.sprite = pygame.transform.scale(self.sprite.subsurface(pygame.Rect(32*self.current_sprite_number, 0, 32, 32)), (100,100))
+        self.sprite = pygame.transform.scale(self.sprite.subsurface(pygame.Rect(32*self.current_sprite_number, 0, 32, 32)), self.sprite_size)
 
 
     def updatePosition(self):
