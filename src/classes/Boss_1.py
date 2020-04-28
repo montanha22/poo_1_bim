@@ -4,6 +4,7 @@ import numpy as np
 from .Bullet import Bullet
 from math import atan2
 from .WeakPoint import WeakPoint
+
 class Boss_1 (GameObject):
     def __init__(self,resolution):
         GameObject.__init__(self, position = [float(resolution[0]/2), float(resolution[1]/2)], width = 200, height = 200)
@@ -54,8 +55,6 @@ class Boss_1 (GameObject):
             self.boss_eye.update_position( np.array((self.centerx, self.centery)), self.direction, self.eye_got_hit)
     
 
-
-
     def attack(self):
         if not self.eye_got_hit and not self.weak_spots.got_hit:
             self.attack_interval = np.random.randint(30,50)
@@ -87,6 +86,31 @@ class Boss_1 (GameObject):
             return True
         return False
     
+
+    def draw(self, gm):
+        pygame.draw.circle(gm.fake_screen, (0,0,0), (self.centerx, self.centery), self.radius, self.radius)
+        #pygame.draw.rect(game_screen.screen, (155,155,155), self.getRect())
+                
+        #Boss Eye
+        pygame.draw.circle(gm.fake_screen, self.boss_eye.color, (int(self.boss_eye.position[0]), int(self.boss_eye.position[1])), self.boss_eye.radius, self.boss_eye.radius)
+        #pygame.draw.rect(game_screen.screen, (155,155,155), self.boss_eye.getRect())
+                
+        #Boss Weak Points
+        pygame.draw.circle(gm.fake_screen, self.weak_spots.color, (int(self.weak_spots.position[0]), int(self.weak_spots.position[1])), self.weak_spots.radius, self.boss_eye.radius)
+        
+    def do_attack(self, game_screen):
+        self.time_last_attack = self.time_last_attack + 1
+        self.time_last_paralized = self.time_last_paralized + 1
+        self.updatePosition((game_screen.hero.centerx, game_screen.hero.centery))
+
+        if self.can_attack:
+            self.attack()
+
+        if self.time_paralized < self.time_last_paralized:
+                self.eye_got_hit = False
+
+        if self.time_last_attack > self.attack_interval:
+            self.can_attack = True
     
     
 class BossEye (GameObject):

@@ -41,12 +41,6 @@ class Hero(GameObject):
         self.can_rewind = False
     
 
-    def draw(self, screen):
-        pass
-
-
-
-
     def moveUp(self):
         self.velocity[1] = -1
 
@@ -134,6 +128,66 @@ class Hero(GameObject):
         if self.colliderect(rect):
             return True
         return False
+    
+    def moviment(self, up, down, left, right):
 
+        if up:
+            self.moveUp()
+        if down:
+            self.moveDown()
+            
+        if up and down:
+            self.stopUpDown()
 
+        if left:
+            self.moveLeft()
+        
+        if right:
+            self.moveRight()
 
+        if left and right:
+            self.stopLeftRigth()
+
+    def rewinding(self):
+        if self.can_rewind:
+            self.is_rewinding = True
+            self.rewind(self.hero.timetrack[-1])
+            self.can_rewind = False
+
+    def update_timetrack(self, count):
+        if count%5 == 0:
+            self.timetrack.append((self.sprite.copy(), self.get_correct_position_to_blit(), self.getRect()))
+        if count%29 == 0 and len(self.timetrack) == self.timetracklen:
+            self.can_rewind = True
+        if len(self.timetrack) > self.timetracklen :
+            self.timetrack.pop(0)
+    
+    def draw_rewind(self):
+        if len(self.timetrack) > 0:
+            self.rewind(self.timetrack[-1])
+            self.timetrack.pop(-1)
+        else:
+            self.is_rewinding = False
+            self.rewind(None)
+    
+    def draw(self, gm):
+        gm.fake_screen.blit(self.sprite, self.get_correct_position_to_blit())
+        #pygame.draw.rect(game_screen.screen, (155,155,155) , self.getRect())
+
+    def attack(self, game_screen):
+        self.time_last_shoot = self.time_last_shoot + 1
+        if self.time_last_shoot > self.shoot_interval:
+                self.can_shoot = True
+
+    def render_timetrack(self, gm):
+        for trail in self.timetrack:
+            if trail[0] != None:
+                temp = trail[0].copy()
+                temp.fill((0,0,255, 100), special_flags = pygame.BLEND_RGBA_MULT)
+                #print(temp.get_alpha())
+                gm.fake_screen.blit(temp, trail[1]) 
+    
+        #Make last timetrack position more darker
+        if len(self.timetrack) != 0:
+            self.timetrack[0][0].fill((0,0,255,255), special_flags = pygame.BLEND_RGBA_MULT)
+            gm.fake_screen.blit(self.timetrack[0][0], self.timetrack[0][1])

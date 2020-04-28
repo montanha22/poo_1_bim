@@ -1,4 +1,4 @@
-from .GameObject import GameObject
+from classes.GameObject import GameObject
 import pygame
 import numpy as np
 from math import atan2

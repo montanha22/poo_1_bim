@@ -2,6 +2,8 @@ import pygame
 import sys
 from classes.Spritesheet import SpriteSheet
 
+#eventos
+
 def post_resize_event(resolution):
     pygame.event.post(pygame.event.Event(pygame.VIDEORESIZE, size = resolution, w = resolution[0],h=resolution[1]))
 
@@ -18,7 +20,6 @@ class Button():
 
     def __init__(self):
         pass
-
 
 def main_menu(gm):
     click=False
@@ -151,7 +152,9 @@ def options(gm):
         else:
             gm.fake_screen.blit(button_nomouseover,mainmenu_button)
             draw_text("Main Menu",gm.font,(81, 87, 70),gm.fake_screen,mainmenu_button.center)
+
         click = False
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 gm.onCleanup()
