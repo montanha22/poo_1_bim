@@ -40,7 +40,7 @@ class Bullet (GameObject):
                 game_screen.boss.time_last_paralized = 0
             elif game_screen.boss.weak_spots.check_collision(self.getRect()):
                 game_screen.hero.bullet_list.remove(self)
-                fame_screen.boss.weak_spots.got_hit = True
+                game_screen.boss.weak_spots.got_hit = True
 
         else: 
             if game_screen.hero.check_collision(self.getRect()) and not gm.game_screen.hero.is_rewinding:
