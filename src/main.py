@@ -2,4 +2,6 @@ from classes.GameManager import GameManager
 
 gm = GameManager()
 
-gm.onMainMenu()
+gm.play()
+
+gm.run()

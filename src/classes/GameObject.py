@@ -1,16 +1,15 @@
 import pygame
 import numpy as np
 class GameObject(pygame.Rect):
-    def __init__ (self, position = [0, 0], width = 100, height = 100, velocity = [0.0, 0.0], scalar_velocity = 30):
-        
+    def __init__ (self, position = [0, 0], width = 100, height = 100, velocity = [0.0, 0.0], scalar_velocity = 30):   
         self.position = np.array(position)
-        left = self.position[0]
-        top = self.position[1] 
-        
-        pygame.Rect.__init__(self, left, top, width, height)
+        self.left = self.position[0]
+        self.top = self.position[1] 
+        pygame.Rect.__init__(self,self.left, self.top, width, height)
+        self.rect = pygame.Rect(self.left, self.top, width, height)
         
         self.velocity = velocity
-        
+
         self.moving = False
         self.moveCount = 0
         self.attacking = False
@@ -27,9 +26,7 @@ class GameObject(pygame.Rect):
         if not ( self.velocity[0] == 0 and self.velocity[1] == 0 ):
 
             self.abs_speed = np.sqrt(self.velocity[0] ** 2 + self.velocity[1] ** 2)
-
-            #print(self.velocity/self.abs_speed)
-            #print(float(1.0 * self.scalar_velocity * self.velocity[0] / self.abs_speed))
+            
             self.velocity[0] = float(1.0 * self.scalar_velocity * self.velocity[0] / self.abs_speed)
             self.velocity[1] = float(1.0 * self.scalar_velocity * self.velocity[1] / self.abs_speed)
 

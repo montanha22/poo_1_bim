@@ -1,1 +1,1 @@
-{'fullscreen': False, 'resolution': (1280, 720)}
+{'fullscreen': False, 'resolution': (960, 540)}

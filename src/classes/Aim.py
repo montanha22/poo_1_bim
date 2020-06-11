@@ -11,7 +11,17 @@ class Aim(GameObject):
         self.radius = 5
         self.thick = 1
 
+
+    def new_aim(self,gm):
+        self.position = gm.mousepos
+
     def updateToPosition(self, pos):
         self.position = pos
 
-    #def draw(self, screen, pos):
+    def draw(self, gm):
+        pygame.draw.circle(gm.fake_screen, self.color, self.position, self.radius, self.thick)
+
+          
+
+
+
