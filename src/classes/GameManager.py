@@ -46,10 +46,10 @@ class GameManager():
         self.fullscreen = config["fullscreen"]
 
         #Text fonts
-        self.font = pygame.font.Font("fonts/kenvector_future.ttf", 20)
-        self.font_big = pygame.font.Font("fonts/kenvector_future.ttf", 250)
-        self.font_med = pygame.font.Font("fonts/kenvector_future.ttf", 100)
-        self.font_p = pygame.font.Font("fonts/kenvector_future.ttf", 50)
+        self.font = pygame.font.Font("sprites/menu/kenvector_future.ttf", 20)
+        self.font_big = pygame.font.Font("sprites/menu/kenvector_future.ttf", 250)
+        self.font_med = pygame.font.Font("sprites/menu/kenvector_future.ttf", 100)
+        self.font_p = pygame.font.Font("sprites/menu/kenvector_future.ttf", 50)
 
         self.screen = pygame.display.set_mode(self.original_resolution, pygame.NOFRAME)
         self.fake_screen=self.screen.copy()
