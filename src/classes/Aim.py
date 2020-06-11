@@ -14,4 +14,10 @@ class Aim(GameObject):
     def updateToPosition(self, pos):
         self.position = pos
 
-    #def draw(self, screen, pos):
+    def draw(self, gm):
+        pygame.draw.circle(gm.fake_screen, self.color, self.position, self.radius, self.thick)
+
+          
+
+
+
