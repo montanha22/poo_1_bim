@@ -96,3 +96,11 @@ A IA do boss é simples: o comportamento principal é seguir o player até a vel
 
 São duas classes auxiliares de GameObjects que são os dois pontos fracos do boss. O primeiro, ao ser atingido, ativa o estado de fúria do boss que dispara um laser rotativo impossível de desviar (a menos pelo uso da técnica de voltar no tempo). O segundo, ao ser atingido, dará a vitória para o jogador!
 
+## Obrigado por jogar!
+
+Time:
+
+    * Due Jie Wan (Obi Wan)
+    * Fernanda Rodrigues (Nanda)
+    * Gustavo Vieira (Montanha)
+    * Nickolas Baptista (Mister)
