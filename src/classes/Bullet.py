@@ -57,7 +57,7 @@ class Bullet (GameObject):
                 pygame.mixer.Channel(0).play(pygame.mixer.Sound(self.sound_hit))
                 gm.game_screen.hero.bullet_list.remove(self)
                 gm.game_screen.boss.weak_spots.got_hit = True
-                gm.gm.actual_screen = gm.win_screen
+                gm.actual_screen = gm.win_screen
                 gm.game_screen._running = False
         
         #Bala do boss

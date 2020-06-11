@@ -26,7 +26,6 @@ class QuitConfirmationScreen(Screen):
                 self.button_1.draw(True, gm)
                 if click:
                     running = False
-                    gm.game_screen.endGame(gm)
                     gm.actual_screen = gm.menu_screen
             else:
                 self.button_1.draw(False, gm)
