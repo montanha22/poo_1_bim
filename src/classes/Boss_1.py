@@ -11,21 +11,21 @@ from .WeakPoint import WeakPoint
 
 class Boss_1 (GameObject):
     def __init__(self,resolution):
-        GameObject.__init__(self, position = [float(resolution[0]/2), float(resolution[1]/2)], width = 282, height = 282)
+        GameObject.__init__(self, position = [4*float(resolution[0]/5), float(resolution[1]/2)], width = 282, height = 282)
         self.scalar_velocity = 3
         self.bullet_list = []
         self.n_bullets_to_shoot = np.random.randint(3,40)
         self.bullet_initial_dist = 100
         self.time_last_attack = 301
-        self.attack_interval = np.random.randint(10,30)
+        self.attack_interval = np.random.randint(6,30)
         self.can_attack = True
         self.furius = False
         self.fixed_in_the_middle = False
         self.bullet_color = (255, 0, 0)
         self.direction = np.array([0.0, 0.0])
         self.weak_got_hit = False
-        self.time_paralized = 750
-        self.time_last_paralized = 760
+        self.time_paralized = 300
+        self.time_last_paralized = 310
         self.eye_got_hit = False
         self.radius = 141
         self.boss_eye = BossEye(self.position, self.radius, self.direction, 25)
@@ -34,7 +34,7 @@ class Boss_1 (GameObject):
     
     def new_boss(self, resolution):
 
-        self.position = [float(resolution[0]/2), float(resolution[1]/2)]
+        self.position = [4*float(resolution[0]/5), float(resolution[1]/2)]
         self.width = 282
         self.height = 282
         self.velocity = [0.0, 0.0]
@@ -57,8 +57,8 @@ class Boss_1 (GameObject):
         self.fixed_in_the_middle = False
         self.direction = np.array([0.0, 0.0])
         self.weak_got_hit = False
-        self.time_paralized = 750
-        self.time_last_paralized = 760
+        self.time_paralized = 300
+        self.time_last_paralized = 310
         self.eye_got_hit = False
         self.radius = 141
         self.boss_eye = BossEye(self.position, self.radius, self.direction, 25)
@@ -86,7 +86,7 @@ class Boss_1 (GameObject):
 
     def attack(self):
         if not self.eye_got_hit and not self.weak_spots.got_hit:
-            self.attack_interval = np.random.randint(30,50)
+            self.attack_interval = np.random.randint(10,15)
             self.time_last_attack = 0
             self.can_attack = False
             self.n_bullets_to_shoot = np.random.randint(3,20)

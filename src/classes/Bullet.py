@@ -64,7 +64,10 @@ class Bullet (GameObject):
         else: 
             if gm.game_screen.hero.check_collision(self.getRect()) and not gm.game_screen.hero.is_rewinding:
                 if self in gm.game_screen.boss.bullet_list:
-                    gm.game_screen.boss.bullet_list.remove(self)
+                    try:
+                        gm.game_screen.boss.bullet_list.remove(self)
+                    except:
+                        pass
                 #Player dies
                 gm.actual_screen = gm.game_over_screen
                 pygame.mixer.Channel(0).play(pygame.mixer.Sound(self.sound_hit))
@@ -73,5 +76,9 @@ class Bullet (GameObject):
     def check_collision_bullet(self, op_bullet, gm):
         if(self.colliderect(op_bullet)):
             pygame.mixer.Channel(0).play(pygame.mixer.Sound(self.sound_hit))
-            gm.game_screen.hero.bullet_list.remove(self)
-            gm.game_screen.boss.bullet_list.remove(op_bullet)
+            try:
+                gm.game_screen.hero.bullet_list.remove(self)
+                gm.game_screen.boss.bullet_list.remove(op_bullet)
+            except:
+                pass
+            

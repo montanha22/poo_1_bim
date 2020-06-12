@@ -75,7 +75,7 @@ class GameManager():
 
     def run(self):
             pygame.mixer.Channel(1).play(pygame.mixer.Sound(self.back_sound), 0)
-            pygame.mixer.Channel(1).set_volume(.3)
+            pygame.mixer.Channel(1).set_volume(.8)
             pygame.mixer.Channel(1).pause()
             while self.running:
                 self.actual_screen.run(self)
