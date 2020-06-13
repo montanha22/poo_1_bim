@@ -2,7 +2,7 @@
 
 ## Introdução
 
-Boss Slayer é um jogo do estilo bullet hell com visão top-down  onde o herói é desafiado a enfrentar bosses extremamente difíceis. Nosso jogo se baseia em um outro jogo chamado **Titan Souls**. Nele, o objetivo do herói é, resumidamente, matar bosses obscenamente fortes de maneira inteligente com um único 'hit'.
+Boss Slayer é um jogo do estilo bullet hell com visão top-down para 1 player, onde o herói é desafiado a enfrentar bosses extremamente difíceis. Nosso jogo se baseia em um outro jogo chamado **Titan Souls**. Nele, o objetivo do herói é, resumidamente, matar bosses obscenamente fortes de maneira inteligente com um único 'hit'.
 
 Algumas sprites do nosso herói (disponíveis gratuitamente na internet):
 
@@ -47,31 +47,7 @@ Também é responsável por iniciar instâncias das telas, cuidar das configura�
 
 É a classe de todos os objetos que são desenhados dentro do jogo e podem sofrer colisão.
 
-### Compilado de classes: principais Screens
-
-#### GameScreen
-
-Classe principal quando falamos do jogo rodando. Ela mantém o loop principal do jogo em andamento.
-
-Foi uma das primeiras classes desenvolvidas e, por isso, acabou virando uma superclasse.
-
-Em resumo: ela instancia todos os [GameObjects](###GameObjects) importantes (Hero, Boss, projéteis), faz contagem da fase atual (apesar do jogo atualmente só ter uma fase), pega as informações dos periféricos (como botões pressionados e clicks de mouse) e cuida do tratamento das colisões.
-
-#### MenuScreen
-
-Classe responsável pelo menu inicial e botões PLAY, OPTIONS, INTRUCTIONS E QUIT.
-
-#### OptionScreen
-
-Classe responsável pela tela de opções de resolução.
-
-#### PauseScreen
-
-Classe responsável pela tela de pausa e seus botões RESUME e MAIN MENU.
-
-#### WinScreen
-
-Tela de vitória para os destemidos que conseguiram derrotar o boss.
+### Principais Game Objects
 
 ### Hero
 
@@ -95,13 +71,57 @@ A IA do boss é simples: o comportamento principal é seguir o player até a vel
 
 ### BossEye e WeakPoint
 
-![](imgs/eye.png)     ![](imgs/weak.png)
+![](imgs/eye.png)     
+![](imgs/weak.png)
 
 São duas classes auxiliares de GameObjects que são os dois pontos fracos do boss. O primeiro, ao ser atingido, ativa o estado de fúria do boss que dispara um laser rotativo impossível de desviar (a menos pelo uso da técnica de voltar no tempo). O segundo, ao ser atingido, dará a vitória para o jogador!
 
 ### Bullet
 
 ### Laser
+
+### Principais Screens
+
+#### MenuScreen
+
+![](imgs/menu_screen.png)
+
+Classe responsável pelo menu inicial e botões PLAY, OPTIONS, INTRUCTIONS E QUIT. Ao ir de outra tela para ela as variaveis do jogo são reiniciadas.
+
+#### OptionsScreen
+
+![](imgs/options_screen.png)
+
+Classe responsável pela tela de opções de resolução.
+
+#### IntructionsScreen
+
+![](imgs/instructions_screen.png)
+
+Classe responsável pela tela de instruções de como jogar.
+
+#### PauseScreen
+
+Classe responsável pela tela de pausa e seus botões RESUME e MAIN MENU.
+
+#### GameOverScreen
+
+Tela de derrota para os que não resistiram aos poderes do nosso boss. Apresenta o score do jogador e é  responsável pelos botões MAIN MENU E QUIT.
+
+#### WinScreen
+
+Tela de vitória para os destemidos que conseguiram derrotar o boss. Responsável pelos botões MAIN MENU e QUIT.
+
+#### GameScreen
+
+![](imgs/game_screen.png)
+
+Classe principal quando falamos do jogo rodando. Ela mantém o loop principal do jogo em andamento.
+
+Foi uma das primeiras classes desenvolvidas e, por isso, acabou virando uma superclasse.
+
+Em resumo: ela instancia todos os [GameObjects](###GameObjects) importantes (Hero, Boss, projéteis), faz contagem da fase atual (apesar do jogo atualmente só ter uma fase), pega as informações dos periféricos (como botões pressionados e clicks de mouse) e cuida do tratamento das colisões e de desenhar os [GameObjects](###GameObjects).
+
 
 ## Obrigado por jogar!
 
