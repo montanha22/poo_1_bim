@@ -15,7 +15,6 @@ class Laser(pygame.Rect):
         self.y1 = 1000
         self.y2 = 0
         self.interval = True
-        self.h = True
     
     def new_laser(self):
         self.angle = 90
@@ -24,7 +23,6 @@ class Laser(pygame.Rect):
         self.y1 = 1000
         self.y2 = 0
         self.interval = True
-        self.h = True
 
     def laserDraw(self,x_origen,y_origen,radius,gm):
         
