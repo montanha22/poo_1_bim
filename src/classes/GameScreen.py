@@ -161,10 +161,8 @@ class GameScreen(Screen):
         if self.boss.furius:
             if self.laser.interval:
                 pygame.mixer.Channel(0).play(pygame.mixer.Sound("sounds/Angry.ogg"))
-                self.laser.time = gm.clock.get_time()
                 self.laser.interval = False
             self.laser.laserDraw(self.boss.centerx, self.boss.centery, self.boss.radius, gm)
-            t =  gm.clock.get_time()
             self.laser.angle = self.laser.angle + 4
             if self.laser.angle > 720+90:
                 self.boss.furius = False
