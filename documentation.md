@@ -75,11 +75,17 @@ A IA do boss é simples: o comportamento principal é seguir o player até a vel
 
 ![](imgs/weak2.png)
 
-São duas classes auxiliares de GameObjects que são os dois pontos fracos do boss. O primeiro, ao ser atingido, ativa o estado de fúria do boss que dispara um laser rotativo impossível de desviar (a menos pelo uso da técnica de voltar no tempo). O segundo, ao ser atingido, dará a vitória para o jogador!
+São duas classes auxiliares de GameObjects que são os dois pontos fracos do boss. O primeiro, ao ser atingido, ativa o estado de fúria do boss que dispara o laser. O segundo, ao ser atingido, dará a vitória para o jogador!
 
 #### Bullet
 
+![](imgs/weak2.png)
+
+Classe das balas do boss e do hero. Para todas as colisões com outro objetos do jogo ou entre as balas (bala do herói e do boss) a bala some e emite um som de hit. A bala do herói quando emitida também produz um som característico. Na sua função de colisão também está presente o que deve acontecer para cada tipo de colisão da bala, como já mencionado nas classes anteriores. 
+
 #### Laser
+
+Classe correspondente ao super-poder do boss que é acionado quando atingido no weak point. Ele rotaciona por toda a tela sendo impossível de desviar a menos pelo uso da técnica de voltar no tempo e também aciona um som característico do boss.
 
 ### Screens
 
@@ -99,23 +105,35 @@ Classe responsável pela tela de opções de resolução.
 
 ![](imgs/instructions_screen.PNG)
 
-Classe responsável pela tela de instruções de como jogar.
+Classe responsável pela tela de instruções de como jogar e pelo botao MAIN MENU.
+
+#### QuitScreen
+
+![](imgs/quit_screen.PNG)
+
+Classe responsável pela tela que confirma se o jogador quer realmente deixar o jogo e pelos botões MAIN MENU e QUIT
 
 #### PauseScreen
+
+![](imgs/pause_sreen.PNG)
 
 Classe responsável pela tela de pausa e seus botões RESUME e MAIN MENU.
 
 #### GameOverScreen
 
-Tela de derrota para os que não resistiram aos poderes do nosso boss. Apresenta o score do jogador e é  responsável pelos botões MAIN MENU E QUIT.
+![](imgs/game_over_sreen.PNG)
+
+Classe responsável pela tela de derrota para os que não resistiram aos poderes do nosso boss e pelos botões MAIN MENU E QUIT. Também aprensenta o score final.
 
 #### WinScreen
 
-Tela de vitória para os destemidos que conseguiram derrotar o boss. Responsável pelos botões MAIN MENU e QUIT.
+![](imgs/win_sreen.PNG)
+
+Classe responsável pela tela de vitória para os destemidos que conseguiram derrotar o boss :) e pelos botões MAIN MENU e QUIT. Também apresenta o score final.
 
 #### GameScreen
 
-![](imgs/game_screen.PNG)
+![](imgs/game_sreen.PNG)
 
 Classe principal quando falamos do jogo rodando. Ela mantém o loop principal do jogo em andamento.
 
