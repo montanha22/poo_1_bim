@@ -49,7 +49,7 @@ Também é responsável por iniciar instâncias das telas, cuidar das configura�
 
 ### Principais Game Objects
 
-### Hero
+#### Hero
 
 ![](sprites/TopDownCharacter/Character/Character_Left.png)
 
@@ -57,7 +57,7 @@ Classe do nosso herói. Ela possui as sprites, tempo mínimo entre disparos, vel
 
 Ela é a responsável pelo herói e suas ações como um todo.
 
-### Boss_1
+#### Boss_1
 
 ![](imgs/boss_1.png)
 
@@ -69,34 +69,35 @@ Guarda e atualiza informações sobre o boss, seus pontos fracos e seus projéte
 
 A IA do boss é simples: o comportamento principal é seguir o player até a velocidade constante com intenção de esbarrar com ele (matando-o). Além disso, atirar um número aleatório de projéteis ao redor em intervalos de tempos também aleatórios.
 
-### BossEye e WeakPoint
+#### BossEye e WeakPoint
 
-![](imgs/eye.png)     
-![](imgs/weak.png)
+![](imgs/eye.png) 
+
+![](imgs/weak2.png)
 
 São duas classes auxiliares de GameObjects que são os dois pontos fracos do boss. O primeiro, ao ser atingido, ativa o estado de fúria do boss que dispara um laser rotativo impossível de desviar (a menos pelo uso da técnica de voltar no tempo). O segundo, ao ser atingido, dará a vitória para o jogador!
 
-### Bullet
+#### Bullet
 
-### Laser
+#### Laser
 
-### Principais Screens
+### Screens
 
 #### MenuScreen
 
-![](imgs/menu_screen.png)
+![](imgs/menu_screen.PNG)
 
 Classe responsável pelo menu inicial e botões PLAY, OPTIONS, INTRUCTIONS E QUIT. Ao ir de outra tela para ela as variaveis do jogo são reiniciadas.
 
-#### OptionsScreen
+### OptionsScreen
 
-![](imgs/options_screen.png)
+![](imgs/options_screen.PNG)
 
 Classe responsável pela tela de opções de resolução.
 
 #### IntructionsScreen
 
-![](imgs/instructions_screen.png)
+![](imgs/instructions_screen.PNG)
 
 Classe responsável pela tela de instruções de como jogar.
 
@@ -114,7 +115,7 @@ Tela de vitória para os destemidos que conseguiram derrotar o boss. Responsáve
 
 #### GameScreen
 
-![](imgs/game_screen.png)
+![](imgs/game_screen.PNG)
 
 Classe principal quando falamos do jogo rodando. Ela mantém o loop principal do jogo em andamento.
 
