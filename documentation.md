@@ -48,11 +48,12 @@ Também é responsável por iniciar instâncias das telas, cuidar das configura�
 É a classe de todos os objetos que são desenhados dentro do jogo e podem sofrer colisão.
 
 ### Compilado de classes: principais Screens
+
 #### GameScreen
 
 Classe principal quando falamos do jogo rodando. Ela mantém o loop principal do jogo em andamento.
 
-Foi uma das primeiras classes desenvolvidas e, por isso, acabou virando uma superclasse um pouco desorganizada.
+Foi uma das primeiras classes desenvolvidas e, por isso, acabou virando uma superclasse.
 
 Em resumo: ela instancia todos os [GameObjects](###GameObjects) importantes (Hero, Boss, projéteis), faz contagem da fase atual (apesar do jogo atualmente só ter uma fase), pega as informações dos periféricos (como botões pressionados e clicks de mouse) e cuida do tratamento das colisões.
 
@@ -92,9 +93,15 @@ Guarda e atualiza informações sobre o boss, seus pontos fracos e seus projéte
 
 A IA do boss é simples: o comportamento principal é seguir o player até a velocidade constante com intenção de esbarrar com ele (matando-o). Além disso, atirar um número aleatório de projéteis ao redor em intervalos de tempos também aleatórios.
 
-#### BossEye e WeakPoint
+### BossEye e WeakPoint
+
+![](imgs/eye.png)     ![](imgs/weak.png)
 
 São duas classes auxiliares de GameObjects que são os dois pontos fracos do boss. O primeiro, ao ser atingido, ativa o estado de fúria do boss que dispara um laser rotativo impossível de desviar (a menos pelo uso da técnica de voltar no tempo). O segundo, ao ser atingido, dará a vitória para o jogador!
+
+### Bullet
+
+### Laser
 
 ## Obrigado por jogar!
 
