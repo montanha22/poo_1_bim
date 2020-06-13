@@ -21,7 +21,6 @@ Requisitos:
 * python3
 * pygame==1.9.6
 * numpy==1.17.2
-* pygame_gui==0.5.5
 
 ## Como jogar
 
