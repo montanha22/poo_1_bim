@@ -26,9 +26,10 @@ class GameManager():
 
         pygame.init()
         pygame.mixer.init()
-        pygame.mixer.set_num_channels(2)
+        pygame.mixer.set_num_channels(4)
 
         self.back_sound = "sounds/back_sound.ogg"
+        self.back_sound1 = "sounds/back_sound1.ogg"
         
         self.mousepos = pygame.mouse.get_pos()
         self.clock = pygame.time.Clock()
@@ -74,9 +75,11 @@ class GameManager():
         self.running = True
 
     def run(self):
-            pygame.mixer.Channel(1).play(pygame.mixer.Sound(self.back_sound), 0)
+            pygame.mixer.Channel(1).play(pygame.mixer.Sound(self.back_sound1), 0)
             pygame.mixer.Channel(1).set_volume(.8)
             pygame.mixer.Channel(1).pause()
+            pygame.mixer.Channel(3).play(pygame.mixer.Sound(self.back_sound), 0)
+            pygame.mixer.Channel(3).set_volume(.8)
             while self.running:
                 self.actual_screen.run(self)
 

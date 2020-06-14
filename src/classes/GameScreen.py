@@ -174,6 +174,7 @@ class GameScreen(Screen):
 
     def run(self, gm):
         
+        pygame.mixer.Channel(3).pause()
         pygame.mixer.Channel(1).unpause()
 
         #Start
