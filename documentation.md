@@ -80,7 +80,7 @@ São duas classes auxiliares de GameObjects que são os dois pontos fracos do bo
 
 ![](imgs/bullet3.png)
 
-Classe das balas do boss e do hero. Para todas as colisões com outro objetos do jogo ou entre as balas (bala do herói e do boss) a bala some e emite um som de hit. A bala do herói quando emitida também produz um som característico. Na sua função de colisão também está presente o que deve acontecer para cada tipo de colisão da bala, como já mencionado nas classes anteriores. 
+Classe das balas do boss e do hero. Para todas as colisões com outros objetos do jogo ou entre as balas (bala do herói e do boss) a bala some e emite um som de hit. A bala do herói quando lançada também produz um som característico. Na sua função de colisão também está presente o que deve acontecer para cada tipo de colisão da bala, como já mencionado nas classes anteriores. 
 
 #### Laser
 
@@ -100,13 +100,13 @@ Classe responsável pelo menu inicial e botões PLAY, OPTIONS, INTRUCTIONS E QUI
 
 ![](imgs/options_screen.PNG)
 
-Classe responsável pela tela de opções de resolução.
+Classe responsável pela tela de opções de resolução e pelo botão MAIN MENU.
 
 #### IntructionsScreen
 
 ![](imgs/instructions_screen.PNG)
 
-Classe responsável pela tela de instruções de como jogar e pelo botao MAIN MENU.
+Classe responsável pela tela de instruções de como jogar e pelo botão MAIN MENU.
 
 #### QuitScreen
 
